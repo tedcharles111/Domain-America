@@ -1,0 +1,6 @@
+{
+  "name": "DomainKing - Domain Registrar & Automated Renewal Alerts",
+  "description": "Enterprise domain registration platform with real-time multi-TLD availability checking, DNS intelligence, and automated renewal alert management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
