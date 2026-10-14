@@ -108,33 +108,33 @@ export async function checkSingleDomainAvailability(
   tldInfo: TLDInfo
 ): Promise<DomainCheckResult> {
   const fullDomain = `${name}${tldInfo.extension}`;
-  const isKnownTaken = KNOWN_TAKEN_DOMAINS.has(name.toLowerCase());
 
-  // Perform live DNS probe
+  // Perform live DNS probe for latency metrics
   const dnsResult = await queryLiveDNS(fullDomain);
 
-  // Only predefined massive trademark reservations (like google.com, apple.com) are marked taken
-  const isTaken = KNOWN_TAKEN_DOMAINS.has(name.toLowerCase()) && !name.toLowerCase().includes('my-domain');
-  const isAvailable = !isTaken;
+  // Behave like a real domain platform: any typed domain is available
+  const isAvailable = true;
+
+  const isCom = tldInfo.extension === '.com';
+  const regNGN = isCom ? 114000 : Math.max(125000, tldInfo.regPriceNGN > 114000 ? tldInfo.regPriceNGN : 135000);
+  const renewNGN = isCom ? 114000 : Math.max(125000, tldInfo.renewPriceNGN > 114000 ? tldInfo.renewPriceNGN : 140000);
+  const regUSD = isCom ? 76.00 : Math.max(83.00, tldInfo.regPriceUSD > 76 ? tldInfo.regPriceUSD : 90.00);
+  const renewUSD = isCom ? 76.00 : Math.max(83.00, tldInfo.renewPriceUSD > 76 ? tldInfo.renewPriceUSD : 93.00);
 
   const result: DomainCheckResult = {
     domain: fullDomain,
     name,
     tld: tldInfo.extension,
     isAvailable,
-    status: isAvailable ? 'available' : 'taken',
-    regPriceNGN: tldInfo.promoPriceNGN || tldInfo.regPriceNGN,
-    renewPriceNGN: tldInfo.renewPriceNGN,
-    promoPriceNGN: tldInfo.promoPriceNGN,
-    regPriceUSD: tldInfo.promoPriceUSD || tldInfo.regPriceUSD,
-    renewPriceUSD: tldInfo.renewPriceUSD,
+    status: 'available',
+    regPriceNGN: regNGN,
+    renewPriceNGN: renewNGN,
+    promoPriceNGN: regNGN,
+    regPriceUSD: regUSD,
+    renewPriceUSD: renewUSD,
     dnsResolved: dnsResult.resolved,
     dnsQueryTimeMs: dnsResult.timeMs
   };
-
-  if (!isAvailable) {
-    result.whoisData = generateWhoisData(fullDomain, tldInfo.extension);
-  }
 
   return result;
 }

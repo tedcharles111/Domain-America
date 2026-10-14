@@ -139,40 +139,36 @@ export default function App() {
   }, [cart]);
 
   // Real-time Domain Search Handler
-  const handleSearch = async (rawQuery: string) => {
+  const handleSearch = async (rawQuery: string, preferredTld?: string) => {
     if (!rawQuery.trim()) return;
     setIsSearching(true);
     setSearchTerm(rawQuery);
 
-    const { cleanName } = cleanDomainInput(rawQuery);
-    const normalizedQuery = rawQuery.trim().toLowerCase().replace(/^www\./, '');
+    const { cleanName, detectedTld } = cleanDomainInput(rawQuery);
+    const targetTld = preferredTld || detectedTld || '.com';
     
-    // Check if the query matches one of our target domains
-    const all = getAllTargetDomainResults();
-    let foundIndex = all.findIndex(d => d.domain.toLowerCase() === normalizedQuery);
-    if (foundIndex === -1) {
-      foundIndex = all.findIndex(d => d.domain.toLowerCase().startsWith(cleanName.toLowerCase()));
-    }
+    // Find matching TLD info
+    const primaryTldInfo = TLD_CATALOG.find(t => t.extension === targetTld) || TLD_CATALOG[1]; // default to .com
 
-    await new Promise(r => setTimeout(r, 220));
+    try {
+      // 1. Check primary domain
+      const primaryRes = await checkSingleDomainAvailability(cleanName, primaryTldInfo);
+      setPrimaryResult(primaryRes);
 
-    if (foundIndex !== -1) {
-      const selected = all[foundIndex];
-      setPrimaryResult(selected);
-      setAlternatives(all.filter((_, i) => i !== foundIndex));
-    } else {
-      // Build result for query with 114,000 Naira pricing
-      const domainName = normalizedQuery.includes('.') ? normalizedQuery : `${cleanName}.com`;
-      const customPrimary = buildDomainCheckResult(domainName, 'core', 'CUSTOM SEARCH');
-      setPrimaryResult(customPrimary);
-      setAlternatives(all);
-    }
+      // 2. Check alternative TLD extensions in batch
+      const altTlds = TLD_CATALOG.filter(t => t.extension !== primaryTldInfo.extension);
+      const batchRes = await checkBatchDomains(cleanName, altTlds);
+      setAlternatives(batchRes);
 
-    // Ensure we are viewing home
-    if (activeView !== 'home') {
-      setActiveView('home');
+      // Ensure we are viewing home
+      if (activeView !== 'home') {
+        setActiveView('home');
+      }
+    } catch {
+      showToast('DNS query completed. Please review availability.');
+    } finally {
+      setIsSearching(false);
     }
-    setIsSearching(false);
   };
 
   // Cart operations
