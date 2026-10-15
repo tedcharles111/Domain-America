@@ -66,7 +66,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight text-balance leading-tight">
               Your Perfect Domain is Now Just{' '}
               <span className="text-white underline decoration-red-500 decoration-4 underline-offset-8">
-                $160
+                114,000
               </span>
             </h1>
 
