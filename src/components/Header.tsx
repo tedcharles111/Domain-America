@@ -10,8 +10,8 @@ interface HeaderProps {
   expiringCount: number;
   onOpenPortal: () => void;
   onOpenWhois: () => void;
-  activeView: 'home' | 'portal';
-  setActiveView: (view: 'home' | 'portal') => void;
+  activeView: 'home' | 'portal' | 'renewal-valleyvista';
+  setActiveView: (view: 'home' | 'portal' | 'renewal-valleyvista') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -42,6 +42,13 @@ export const Header: React.FC<HeaderProps> = ({
             className="underline font-bold hover:text-amber-200 transition-colors cursor-pointer"
           >
             Access Automated Renewal Portal &rarr;
+          </button>
+          <span className="hidden sm:inline text-red-300">|</span>
+          <button
+            onClick={() => setActiveView('renewal-valleyvista')}
+            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-2 py-0.5 rounded text-[11px] transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs"
+          >
+            <span>Renew valleyvista.com.ng (75K)</span>
           </button>
         </div>
       </div>
@@ -85,6 +92,10 @@ export const Header: React.FC<HeaderProps> = ({
                   <button onClick={() => { setActiveView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 font-medium text-slate-800">
                     Register a Domain (.com.ng / .com)
                   </button>
+                  <button onClick={() => setActiveView('renewal-valleyvista')} className="text-left px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 font-bold text-amber-900 flex items-center justify-between">
+                    <span>Renew valleyvista.com.ng</span>
+                    <span className="bg-amber-200 text-slate-900 text-[10px] px-1.5 py-0.5 rounded font-black">75K</span>
+                  </button>
                   <button onClick={onOpenWhois} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 font-medium text-slate-800">
                     WHOIS Lookup & DNS Inspector
                   </button>
@@ -97,6 +108,18 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               </div>
             </div>
+
+            <button
+              onClick={() => setActiveView('renewal-valleyvista')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeView === 'renewal-valleyvista'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm'
+                  : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200'
+              }`}
+            >
+              <span>Renew valleyvista.com.ng</span>
+              <span className="bg-amber-400 text-slate-950 text-[10px] px-1.5 py-0.2 rounded font-black">75K</span>
+            </button>
 
             <a href="#hosting-plans" className="hover:text-red-600 transition-colors">Hosting</a>
             <a href="#security-section" className="hover:text-red-600 transition-colors">Email</a>

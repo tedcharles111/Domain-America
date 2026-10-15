@@ -19,6 +19,7 @@ interface RealTimeResultsProps {
   cartItemNames: Set<string>;
   onInspectWhois: (whois: WhoisRecord) => void;
   searchTerm: string;
+  onOpenValleyVistaRenewal?: () => void;
 }
 
 export const RealTimeResults: React.FC<RealTimeResultsProps> = ({
@@ -27,7 +28,8 @@ export const RealTimeResults: React.FC<RealTimeResultsProps> = ({
   currency,
   onAddToCart,
   cartItemNames,
-  searchTerm
+  searchTerm,
+  onOpenValleyVistaRenewal
 }) => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<'all' | 'core' | 'tech' | 'experience' | 'human' | 'enterprise' | 'brandable'>('all');
@@ -93,8 +95,16 @@ export const RealTimeResults: React.FC<RealTimeResultsProps> = ({
                   for {selectedPeriod} year{selectedPeriod > 1 ? 's' : ''}
                 </span>
               </div>
-              <div className="text-xs text-slate-400 mt-0.5">
-                Then {formatCurrency(renewPrice, currency)}/yr renewal
+              <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2 flex-wrap justify-start lg:justify-end">
+                <span>Then {primaryResult.domain.toLowerCase() === 'valleyvista.com.ng' ? (currency === 'NGN' ? '75K (₦75,000)/yr renewal' : '$50.00/yr renewal') : `${formatCurrency(renewPrice, currency)}/yr renewal`}</span>
+                {primaryResult.domain.toLowerCase() === 'valleyvista.com.ng' && onOpenValleyVistaRenewal && (
+                  <button
+                    onClick={onOpenValleyVistaRenewal}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 hover:text-amber-200 underline cursor-pointer"
+                  >
+                    <span>Open 75K Renewal Desk &rarr;</span>
+                  </button>
+                )}
               </div>
             </div>
 

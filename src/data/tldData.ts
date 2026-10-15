@@ -230,6 +230,48 @@ export const HOSTING_PLANS = [
 
 export const INITIAL_REGISTERED_DOMAINS = [
   {
+    id: 'dom-valleyvista',
+    domain: 'valleyvista.com.ng',
+    tld: '.com.ng',
+    registrationDate: '2025-10-28',
+    expiryDate: '2026-10-28',
+    daysRemaining: 13,
+    autoRenew: false,
+    status: 'expiring_soon' as const,
+    renewalPriceNGN: 75500,
+    renewalPriceUSD: 50.50,
+    nameservers: ['ns1.domainking.ng', 'ns2.domainking.ng'],
+    privacyEnabled: true,
+    emailForwarding: true,
+    alertConfig: {
+      enabled: true,
+      channels: {
+        email: true,
+        sms: true,
+        webhook: true,
+        inApp: true
+      },
+      thresholds: {
+        d60: true,
+        d30: true,
+        d14: true,
+        d7: true,
+        d3: true,
+        d1: true,
+        d0: true,
+        grace: true
+      },
+      destinationEmail: 'tedcharleschinekezi@gmail.com',
+      destinationPhone: '+234 803 123 4567',
+      webhookUrl: 'https://api.valleyvista.com.ng/webhooks/renewal'
+    },
+    lastAlertSent: {
+      date: '2026-10-14 09:00 UTC',
+      threshold: '14-Day Notice',
+      channel: 'Email & SMS'
+    }
+  },
+  {
     id: 'dom-1',
     domain: 'businesslaunch.com.ng',
     tld: '.com.ng',

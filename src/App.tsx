@@ -49,6 +49,7 @@ import { FeatureSpotlights } from './components/FeatureSpotlights';
 import { FaqSection } from './components/FaqSection';
 import { AccreditationBar } from './components/AccreditationBar';
 import { Footer } from './components/Footer';
+import { ValleyVistaRenewalPage } from './components/ValleyVistaRenewalPage';
 
 // Modals
 import { CartDrawer } from './components/Modals/CartDrawer';
@@ -64,8 +65,8 @@ export default function App() {
     return (localStorage.getItem('dk_currency') as Currency) || 'NGN';
   });
 
-  // Active view: 'home' or 'portal'
-  const [activeView, setActiveView] = useState<'home' | 'portal'>('home');
+  // Active view: 'home', 'portal', or 'renewal-valleyvista'
+  const [activeView, setActiveView] = useState<'home' | 'portal' | 'renewal-valleyvista'>('home');
 
   // Registered domains in portfolio
   const [domains, setDomains] = useState<RegisteredDomain[]>(() => {
@@ -441,7 +442,28 @@ export default function App() {
 
       {/* Main Page Content */}
       <main className="flex-1">
-        {activeView === 'portal' ? (
+        {activeView === 'renewal-valleyvista' ? (
+          <ValleyVistaRenewalPage
+            currency={currency}
+            onCurrencyChange={setCurrency}
+            onBackToHome={() => {
+              setActiveView('home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenPortal={() => {
+              setActiveView('portal');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onRenewalSuccess={(newExpiry) => {
+              setDomains(prev => prev.map(d => 
+                d.domain === 'valleyvista.com.ng' 
+                  ? { ...d, expiryDate: newExpiry, daysRemaining: 365, status: 'active' as const } 
+                  : d
+              ));
+              showToast('valleyvista.com.ng successfully renewed at the 75K rate!');
+            }}
+          />
+        ) : activeView === 'portal' ? (
           <RenewalAlertsPortal
             domains={domains}
             notifications={notifications}
@@ -473,6 +495,10 @@ export default function App() {
                 cartItemNames={cartItemNames}
                 onInspectWhois={(whois) => setSelectedWhois(whois)}
                 searchTerm={searchTerm}
+                onOpenValleyVistaRenewal={() => {
+                  setActiveView('renewal-valleyvista');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               />
             )}
 

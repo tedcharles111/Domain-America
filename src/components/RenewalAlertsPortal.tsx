@@ -218,46 +218,91 @@ export const RenewalAlertsPortal: React.FC<RenewalAlertsPortalProps> = ({
 
       {/* Tab 1: Domain Portfolio Table */}
       {activeTab === 'portfolio' && (
-        <div className="mt-6 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
-                <tr>
-                  <th className="py-3.5 px-6">Domain Name</th>
-                  <th className="py-3.5 px-4">Expiration Date</th>
-                  <th className="py-3.5 px-4">Status & Days Left</th>
-                  <th className="py-3.5 px-4">Auto-Renew</th>
-                  <th className="py-3.5 px-4">Alert Config</th>
-                  <th className="py-3.5 px-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {domains.map((dom) => {
-                  const isCritical = dom.daysRemaining <= 5;
-                  const isWarning = dom.daysRemaining > 5 && dom.daysRemaining <= 30;
-                  const renewalPrice = currency === 'NGN' ? dom.renewalPriceNGN : dom.renewalPriceUSD;
+        <div className="mt-6 space-y-4">
+          {/* ValleyVista 75K Special Callout Banner */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-slate-50 to-amber-500/5 border border-amber-300 flex items-center justify-between gap-4 flex-wrap shadow-xs">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-amber-500 text-slate-950 flex flex-col items-center justify-center font-black leading-none shadow-sm">
+                <span className="text-sm">75K</span>
+                <span className="text-[9px] font-bold uppercase">Rate</span>
+              </div>
+              <div>
+                <div className="font-extrabold text-sm sm:text-base text-slate-900 flex items-center gap-2 flex-wrap">
+                  <span>valleyvista.com.ng Special Renewal Desk</span>
+                  <span className="text-[10px] bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full font-bold">Expires in 13 Days</span>
+                </div>
+                <p className="text-xs text-slate-600 mt-0.5">
+                  Your enterprise renewal price is currently subsidized at <strong className="text-slate-900 font-bold">{currency === 'NGN' ? '₦75,500' : '$50.50'} / year</strong>.
+                </p>
+              </div>
+            </div>
 
-                  return (
-                    <tr key={dom.id} className="hover:bg-slate-50/80 transition-colors">
-                      {/* Domain Name */}
-                      <td className="py-4 px-6">
-                        <div className="font-extrabold text-slate-900 text-base">
-                          {dom.domain}
-                        </div>
-                        <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                          <span>DNS: {dom.nameservers[0]}</span>
-                          <span>·</span>
-                          <span className={dom.privacyEnabled ? 'text-emerald-600' : 'text-slate-400'}>
-                            {dom.privacyEnabled ? 'WHOIS Privacy Protected' : 'Public WHOIS'}
-                          </span>
-                        </div>
-                      </td>
+            <button
+              onClick={() => {
+                const targetDom = domains.find(d => d.domain === 'valleyvista.com.ng') || domains[0];
+                onOpenRenewModal(targetDom);
+              }}
+              className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Renew for 75K Now</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
 
-                      {/* Expiration Date */}
-                      <td className="py-4 px-4 font-mono text-xs text-slate-700 tabular-nums">
-                        <div className="font-semibold text-slate-900">{dom.expiryDate}</div>
-                        <div className="text-[11px] text-slate-400">Renews at {formatCurrency(renewalPrice, currency)}</div>
-                      </td>
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
+                  <tr>
+                    <th className="py-3.5 px-6">Domain Name</th>
+                    <th className="py-3.5 px-4">Expiration Date</th>
+                    <th className="py-3.5 px-4">Status & Days Left</th>
+                    <th className="py-3.5 px-4">Auto-Renew</th>
+                    <th className="py-3.5 px-4">Alert Config</th>
+                    <th className="py-3.5 px-6 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {domains.map((dom) => {
+                    const isCritical = dom.daysRemaining <= 5;
+                    const isWarning = dom.daysRemaining > 5 && dom.daysRemaining <= 30;
+                    const isValleyVista = dom.domain === 'valleyvista.com.ng';
+                    const renewalPrice = currency === 'NGN' ? dom.renewalPriceNGN : dom.renewalPriceUSD;
+
+                    return (
+                      <tr key={dom.id} className={`hover:bg-slate-50/80 transition-colors ${isValleyVista ? 'bg-amber-50/30' : ''}`}>
+                        {/* Domain Name */}
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-2">
+                            <span className="font-extrabold text-slate-900 text-base">
+                              {dom.domain}
+                            </span>
+                            {isValleyVista && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide">
+                                75K SPECIAL
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
+                            <span>DNS: {dom.nameservers[0]}</span>
+                            <span>·</span>
+                            <span className={dom.privacyEnabled ? 'text-emerald-600' : 'text-slate-400'}>
+                              {dom.privacyEnabled ? 'WHOIS Privacy Protected' : 'Public WHOIS'}
+                            </span>
+                          </div>
+                        </td>
+
+                        {/* Expiration Date */}
+                        <td className="py-4 px-4 font-mono text-xs text-slate-700 tabular-nums">
+                          <div className="font-semibold text-slate-900">{dom.expiryDate}</div>
+                          <div className="text-[11px] text-slate-500 font-sans">
+                            {isValleyVista ? (
+                              <span className="font-bold text-amber-700">Renews at 75K ({formatCurrency(renewalPrice, currency)})</span>
+                            ) : (
+                              <span>Renews at {formatCurrency(renewalPrice, currency)}</span>
+                            )}
+                          </div>
+                        </td>
 
                       {/* Status & Days Left */}
                       <td className="py-4 px-4">
@@ -364,7 +409,8 @@ export const RenewalAlertsPortal: React.FC<RenewalAlertsPortalProps> = ({
             </table>
           </div>
         </div>
-      )}
+      </div>
+    )}
 
       {/* Tab 2: Alert Dispatch History & Logs */}
       {activeTab === 'logs' && (
