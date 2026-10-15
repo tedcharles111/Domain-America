@@ -227,7 +227,7 @@ export const ValleyVistaRenewalPage: React.FC<ValleyVistaRenewalPageProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
                   {[
-                    { years: 1, label: '1 Year Renewal', rate: 75500, rateUSD: 50.5, badge: 'Standard Rate' },
+                    { years: 1, label: 'Next Year Renewal', rate: 75500, rateUSD: 50.5, badge: 'Standard Rate' },
                     { years: 2, label: '2 Years Renewal', rate: 151000, rateUSD: 101.0, badge: 'Popular Choice' },
                     { years: 3, label: '3 Years Renewal', rate: 226500, rateUSD: 151.5, badge: 'Save Extra' },
                     { years: 5, label: '5 Years Renewal', rate: 377500, rateUSD: 252.5, badge: 'Maximum Shield' }
@@ -248,11 +248,6 @@ export const ValleyVistaRenewalPage: React.FC<ValleyVistaRenewalPageProps> = ({
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-extrabold text-sm">{tier.label}</span>
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            isSelected ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                          }`}>
-                            {tier.badge}
-                          </span>
                         </div>
 
                         <div className="mt-3">
