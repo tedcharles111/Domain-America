@@ -115,7 +115,8 @@ export async function checkSingleDomainAvailability(
   // Behave like a real domain platform: any typed domain is available
   const isAvailable = true;
 
-  const isCom = tldInfo.extension === '.com';
+  const isValleyVista = fullDomain.toLowerCase() === 'valleyvista.com.ng';
+  const isCom = tldInfo.extension === '.com' || isValleyVista;
   const regNGN = isCom ? 114000 : Math.max(125000, tldInfo.regPriceNGN > 114000 ? tldInfo.regPriceNGN : 135000);
   const renewNGN = isCom ? 114000 : Math.max(125000, tldInfo.renewPriceNGN > 114000 ? tldInfo.renewPriceNGN : 140000);
   const regUSD = isCom ? 76.00 : Math.max(83.00, tldInfo.regPriceUSD > 76 ? tldInfo.regPriceUSD : 90.00);

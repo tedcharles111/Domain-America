@@ -1,8 +1,8 @@
 import { DomainCheckResult } from '../types';
 
 export const TARGET_DOMAIN_NAMES = [
-  // Group 1: Core ExperienceTech variations
-  { domain: 'ExperienceTech.com', category: 'core', tag: 'PREMIUM PICK' },
+  // Group 1: Core ValleyVista variations
+  { domain: 'valleyvista.com.ng', category: 'core', tag: 'PREMIUM NIGERIA' },
   { domain: 'ExperienceTechnology.com', category: 'core', tag: 'CORPORATE' },
   { domain: 'TechExperience.com', category: 'core', tag: 'POPULAR' },
   { domain: 'TheTechExperience.com', category: 'core', tag: 'AUTHORITY' },

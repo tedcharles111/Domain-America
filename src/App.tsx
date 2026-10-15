@@ -98,7 +98,7 @@ export default function App() {
   const allTargets = getAllTargetDomainResults();
 
   // Search state
-  const [searchTerm, setSearchTerm] = useState('ExperienceTech.com');
+  const [searchTerm, setSearchTerm] = useState('valleyvista.com.ng');
   const [isSearching, setIsSearching] = useState(false);
   const [primaryResult, setPrimaryResult] = useState<DomainCheckResult | null>(() => allTargets[0]);
   const [alternatives, setAlternatives] = useState<DomainCheckResult[]>(() => allTargets.slice(1));

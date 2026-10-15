@@ -28,7 +28,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({
   };
 
   const chips = [
-    { name: 'ExperienceTech.com', ngn: '₦114,000', usd: '$76.00', hot: true },
+    { name: 'valleyvista.com.ng', ngn: '₦114,000', usd: '$76.00', hot: true },
     { name: 'TechExperience.com', ngn: '₦114,000', usd: '$76.00' },
     { name: 'TechDiscovery.com', ngn: '₦114,000', usd: '$76.00' },
     { name: 'ExperienceHub.com', ngn: '₦114,000', usd: '$76.00' },
@@ -95,7 +95,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="ExperienceTech.com"
+                    placeholder="valleyvista.com.ng"
                     className="w-full bg-transparent text-slate-900 placeholder:text-slate-400 text-base sm:text-lg font-medium focus:outline-none"
                     autoComplete="off"
                     autoCorrect="off"
